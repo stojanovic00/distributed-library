@@ -3,13 +3,34 @@ name: "distributed-lib"
 
 services:
 
+  central-library:
+    build: ./central_library
+    container_name: central-lib
+    environment:
+      CENTRAL_HOST: ${CENTRAL_HOST}
+      CENTRAL_PORT: ${CENTRAL_PORT}
+
+      CENTRAL_DB_HOST: central-db
+      CENTRAL_DB_NAME: ${CENTRAL_DB_NAME}
+      CENTRAL_DB_PASS: ${CENTRAL_DB_PASS}
+      CENTRAL_DB_PORT: ${CENTRAL_DB_PORT}
+      CENTRAL_DB_USER: ${CENTRAL_DB_USER}
+    ports:
+      #Temp
+      - 8081:${CENTRAL_PORT}
+    depends_on:
+      central-db:
+        condition: service_healthy
+    networks:
+      - network
+
   central-db:
     image: postgres:latest
     container_name: central-db
     environment:
-      POSTGRES_DB: ${CENTRAL_DB_NAME}
-      PGUSER: ${CENTRAL_DB_USER}
-      POSTGRES_PASSWORD: ${CENTRAL_DB_PASS}
+        POSTGRES_DB: ${CENTRAL_DB_NAME}
+        PGUSER: ${CENTRAL_DB_USER}
+        POSTGRES_PASSWORD: ${CENTRAL_DB_PASS}
     volumes:
       - central-db:/var/lib/postgresql/data
     healthcheck:
@@ -22,8 +43,6 @@ services:
       - network
     ports:
       - 5001:${CENTRAL_DB_PORT}
-
-
 
 
 volumes:
