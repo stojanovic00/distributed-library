@@ -1,0 +1,34 @@
+version: "3"
+name: "distributed-lib"
+
+services:
+
+  central-db:
+    image: postgres:latest
+    container_name: central-db
+    environment:
+      POSTGRES_DB: ${CENTRAL_DB_NAME}
+      PGUSER: ${CENTRAL_DB_USER}
+      POSTGRES_PASSWORD: ${CENTRAL_DB_PASS}
+    volumes:
+      - central-db:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 10s
+    networks:
+      - network
+    ports:
+      - 5001:${CENTRAL_DB_PORT}
+
+
+
+
+volumes:
+  central-db:
+
+networks:
+  network:
+    driver: bridge
