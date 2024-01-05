@@ -41,24 +41,24 @@ services:
     ports:
       - 5000:${CENTRAL_DB_PORT}
 
-
+#NS
   local-lib-ns:
     build: ./local_library
     container_name: local-lib-ns
     environment:
-      LOCAL_HOST_NS: ${LOCAL_HOST_NS}
-      LOCAL_PORT_NS: ${LOCAL_PORT_NS}
+      LOCAL_HOST: ${LOCAL_HOST_NS}
+      LOCAL_PORT: ${LOCAL_PORT_NS}
 
-      LOCAL_DB_HOST_NS: ${LOCAL_DB_HOST_NS}
-      LOCAL_DB_NAME_NS: ${LOCAL_DB_NAME_NS}
-      LOCAL_DB_PASS_NS: ${LOCAL_DB_PASS_NS}
-      LOCAL_DB_PORT_NS: ${LOCAL_DB_PORT_NS}
-      LOCAL_DB_USER_NS: ${LOCAL_DB_USER_NS}
+      LOCAL_DB_HOST: ${LOCAL_DB_HOST_NS}
+      LOCAL_DB_NAME: ${LOCAL_DB_NAME_NS}
+      LOCAL_DB_PASS: ${LOCAL_DB_PASS_NS}
+      LOCAL_DB_PORT: ${LOCAL_DB_PORT_NS}
+      LOCAL_DB_USER: ${LOCAL_DB_USER_NS}
 
       CENTRAL_HOST: ${CENTRAL_HOST}
       CENTRAL_PORT: ${CENTRAL_PORT}
     ports:
-      - 8081:${LOCAL_PORT_NS}
+      - ${EXPOSED_NS}:${LOCAL_PORT_NS}
     depends_on:
       local-db-ns:
         condition: service_healthy
@@ -83,11 +83,102 @@ services:
     networks:
       - network
     ports:
-      - 5001:${LOCAL_DB_PORT_NS}
+      - ${DB_EXPOSED_NS}:${LOCAL_DB_PORT_NS}
+
+
+# BG
+  local-lib-bg:
+    build: ./local_library
+    container_name: local-lib-bg
+    environment:
+      LOCAL_HOST: ${LOCAL_HOST_BG}
+      LOCAL_PORT: ${LOCAL_PORT_BG}
+
+      LOCAL_DB_HOST: ${LOCAL_DB_HOST_BG}
+      LOCAL_DB_NAME: ${LOCAL_DB_NAME_BG}
+      LOCAL_DB_PASS: ${LOCAL_DB_PASS_BG}
+      LOCAL_DB_PORT: ${LOCAL_DB_PORT_BG}
+      LOCAL_DB_USER: ${LOCAL_DB_USER_BG}
+
+      CENTRAL_HOST: ${CENTRAL_HOST}
+      CENTRAL_PORT: ${CENTRAL_PORT}
+    ports:
+      - ${EXPOSED_BG}:${LOCAL_PORT_BG}
+    depends_on:
+      local-db-bg:
+        condition: service_healthy
+    networks:
+      - network
+
+  local-db-bg:
+    image: postgres:latest
+    container_name: local-db-bg
+    environment:
+        POSTGRES_DB: ${LOCAL_DB_NAME_BG}
+        PGUSER: ${LOCAL_DB_USER_BG}
+        POSTGRES_PASSWORD: ${LOCAL_DB_PASS_BG}
+    volumes:
+      - local-db-bg:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 10s
+    networks:
+      - network
+    ports:
+      - ${DB_EXPOSED_BG}:${LOCAL_DB_PORT_BG}
+
+#NI
+  local-lib-ni:
+    build: ./local_library
+    container_name: local-lib-ni
+    environment:
+      LOCAL_HOST: ${LOCAL_HOST_NI}
+      LOCAL_PORT: ${LOCAL_PORT_NI}
+
+      LOCAL_DB_HOST: ${LOCAL_DB_HOST_NI}
+      LOCAL_DB_NAME: ${LOCAL_DB_NAME_NI}
+      LOCAL_DB_PASS: ${LOCAL_DB_PASS_NI}
+      LOCAL_DB_PORT: ${LOCAL_DB_PORT_NI}
+      LOCAL_DB_USER: ${LOCAL_DB_USER_NI}
+
+      CENTRAL_HOST: ${CENTRAL_HOST}
+      CENTRAL_PORT: ${CENTRAL_PORT}
+    ports:
+      - ${EXPOSED_NI}:${LOCAL_PORT_NI}
+    depends_on:
+      local-db-ni:
+        condition: service_healthy
+    networks:
+      - network
+
+  local-db-ni:
+    image: postgres:latest
+    container_name: local-db-ni
+    environment:
+        POSTGRES_DB: ${LOCAL_DB_NAME_NI}
+        PGUSER: ${LOCAL_DB_USER_NI}
+        POSTGRES_PASSWORD: ${LOCAL_DB_PASS_NI}
+    volumes:
+      - local-db-ni:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 10s
+    networks:
+      - network
+    ports:
+      - ${DB_EXPOSED_NI}:${LOCAL_DB_PORT_NI}
 
 volumes:
   central-db:
   local-db-ns:
+  local-db-bg:
+  local-db-ni:
 
 networks:
   network:
