@@ -1,0 +1,29 @@
+name: Publish docker images
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish-central-lib:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Pull code
+        uses: actions/checkout@v3
+      - name: Build image
+        run: docker build -t ${{vars.CENTRAL_LIB_REPO}}:latest ./central_library
+      - name: Login on dockerhub
+        run: docker login -u ${{ vars.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Push image on dockerhub
+        run: docker push ${{vars.CENTRAL_LIB_REPO}}:latest
+  publish-local-lib:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Pull code
+        uses: actions/checkout@v3
+      - name: Build image
+        run: docker build -t ${{vars.LOCAL_LIB_REPO}}:latest ./local_library
+      - name: Login on dockerhub
+        run: docker login -u ${{ vars.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Push image on dockerhub
+        run: docker push ${{vars.LOCAL_LIB_REPO}}:latest

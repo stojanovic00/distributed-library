@@ -4,8 +4,7 @@ name: "distributed-lib"
 services:
 
   central-library:
-    build: ./central_library
-    container_name: central-lib
+    image: aleksandar4761/central-library:latest
     environment:
       CENTRAL_HOST: ${CENTRAL_HOST}
       CENTRAL_PORT: ${CENTRAL_PORT}
@@ -23,7 +22,6 @@ services:
 
   central-db:
     image: postgres:latest
-    container_name: central-db
     environment:
         POSTGRES_DB: ${CENTRAL_DB_NAME}
         PGUSER: ${CENTRAL_DB_USER}
@@ -43,8 +41,7 @@ services:
 
 #NS
   local-lib-ns:
-    build: ./local_library
-    container_name: local-lib-ns
+    image: aleksandar4761/local-library:latest
     environment:
       LOCAL_HOST: ${LOCAL_HOST_NS}
       LOCAL_PORT: ${LOCAL_PORT_NS}
@@ -67,7 +64,6 @@ services:
 
   local-db-ns:
     image: postgres:latest
-    container_name: local-db-ns
     environment:
         POSTGRES_DB: ${LOCAL_DB_NAME_NS}
         PGUSER: ${LOCAL_DB_USER_NS}
@@ -88,8 +84,7 @@ services:
 
 # BG
   local-lib-bg:
-    build: ./local_library
-    container_name: local-lib-bg
+    image: aleksandar4761/local-library:latest
     environment:
       LOCAL_HOST: ${LOCAL_HOST_BG}
       LOCAL_PORT: ${LOCAL_PORT_BG}
@@ -112,7 +107,6 @@ services:
 
   local-db-bg:
     image: postgres:latest
-    container_name: local-db-bg
     environment:
         POSTGRES_DB: ${LOCAL_DB_NAME_BG}
         PGUSER: ${LOCAL_DB_USER_BG}
@@ -132,8 +126,7 @@ services:
 
 #NI
   local-lib-ni:
-    build: ./local_library
-    container_name: local-lib-ni
+    image: aleksandar4761/local-library:latest
     environment:
       LOCAL_HOST: ${LOCAL_HOST_NI}
       LOCAL_PORT: ${LOCAL_PORT_NI}
@@ -156,7 +149,6 @@ services:
 
   local-db-ni:
     image: postgres:latest
-    container_name: local-db-ni
     environment:
         POSTGRES_DB: ${LOCAL_DB_NAME_NI}
         PGUSER: ${LOCAL_DB_USER_NI}
