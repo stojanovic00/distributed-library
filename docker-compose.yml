@@ -10,14 +10,11 @@ services:
       CENTRAL_HOST: ${CENTRAL_HOST}
       CENTRAL_PORT: ${CENTRAL_PORT}
 
-      CENTRAL_DB_HOST: central-db
+      CENTRAL_DB_HOST: ${CENTRAL_DB_HOST}
       CENTRAL_DB_NAME: ${CENTRAL_DB_NAME}
       CENTRAL_DB_PASS: ${CENTRAL_DB_PASS}
       CENTRAL_DB_PORT: ${CENTRAL_DB_PORT}
       CENTRAL_DB_USER: ${CENTRAL_DB_USER}
-    ports:
-      #Temp
-      - 8081:${CENTRAL_PORT}
     depends_on:
       central-db:
         condition: service_healthy
@@ -42,11 +39,55 @@ services:
     networks:
       - network
     ports:
-      - 5001:${CENTRAL_DB_PORT}
+      - 5000:${CENTRAL_DB_PORT}
 
+
+  local-lib-ns:
+    build: ./local_library
+    container_name: local-lib-ns
+    environment:
+      LOCAL_HOST_NS: ${LOCAL_HOST_NS}
+      LOCAL_PORT_NS: ${LOCAL_PORT_NS}
+
+      LOCAL_DB_HOST_NS: ${LOCAL_DB_HOST_NS}
+      LOCAL_DB_NAME_NS: ${LOCAL_DB_NAME_NS}
+      LOCAL_DB_PASS_NS: ${LOCAL_DB_PASS_NS}
+      LOCAL_DB_PORT_NS: ${LOCAL_DB_PORT_NS}
+      LOCAL_DB_USER_NS: ${LOCAL_DB_USER_NS}
+
+      CENTRAL_HOST: ${CENTRAL_HOST}
+      CENTRAL_PORT: ${CENTRAL_PORT}
+    ports:
+      - 8081:${LOCAL_PORT_NS}
+    depends_on:
+      local-db-ns:
+        condition: service_healthy
+    networks:
+      - network
+
+  local-db-ns:
+    image: postgres:latest
+    container_name: local-db-ns
+    environment:
+        POSTGRES_DB: ${LOCAL_DB_NAME_NS}
+        PGUSER: ${LOCAL_DB_USER_NS}
+        POSTGRES_PASSWORD: ${LOCAL_DB_PASS_NS}
+    volumes:
+      - local-db-ns:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 10s
+    networks:
+      - network
+    ports:
+      - 5001:${LOCAL_DB_PORT_NS}
 
 volumes:
   central-db:
+  local-db-ns:
 
 networks:
   network:

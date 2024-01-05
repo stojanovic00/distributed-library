@@ -1,19 +1,20 @@
 package app
 
 import (
-	"central_library/core/domain"
-	"central_library/handler"
-	"central_library/persistence"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"local_library/core/domain"
+	"local_library/handler"
+	"local_library/persistence"
 	"log"
 )
 
 func (a *App) CreateRoutersAndSetRoutes() error {
 	//DEPENDENCIES
+	userHandler := handler.NewUserHandler(&a.Config)
 	pgClient := a.initPGClient()
-	userRepo := persistence.NewUserRepoPg(pgClient)
-	userHandler := handler.NewUserHandler(userRepo)
+	issuingRepo := persistence.NewIssuingRepoPg(pgClient)
+	issuingHandler := handler.NewIssuingHandler(&a.Config, issuingRepo)
 
 	// ROUTES
 	router := gin.Default()
@@ -24,8 +25,10 @@ func (a *App) CreateRoutersAndSetRoutes() error {
 
 	userGroup := router.Group("/user")
 	userGroup.POST("", userHandler.Register)
-	userGroup.POST("/:id/record-issue", userHandler.RecordBookIssue)
-	userGroup.POST("/:id/record-return", userHandler.RecordBookReturn)
+
+	bookGroup := router.Group("/book")
+	bookGroup.POST("/issue", issuingHandler.RecordBookIssue)
+	bookGroup.PUT(":isbn/return", issuingHandler.RecordBookReturn)
 
 	a.Router = router
 	return nil
@@ -39,9 +42,8 @@ func (a *App) initPGClient() *gorm.DB {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	err = client.AutoMigrate(
-		&domain.User{},
+		&domain.IssuingRecord{},
 	)
 	if err != nil {
 		log.Fatal(err)
