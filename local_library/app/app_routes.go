@@ -7,6 +7,7 @@ import (
 	"local_library/handler"
 	"local_library/persistence"
 	"log"
+	"time"
 )
 
 func (a *App) CreateRoutersAndSetRoutes() error {
@@ -35,15 +36,30 @@ func (a *App) CreateRoutersAndSetRoutes() error {
 }
 
 func (a *App) initPGClient() *gorm.DB {
-	client, err := persistence.GetPostgresClient(
-		a.Config.DbHost, a.Config.DbUser,
-		a.Config.DbPass, a.Config.DbName,
-		a.Config.DbPort)
+	var (
+		client *gorm.DB
+		err    error
+	)
+
+	for attempt := 1; attempt <= 30; attempt++ {
+		client, err = persistence.GetPostgresClient(
+			a.Config.DbHost, a.Config.DbUser,
+			a.Config.DbPass, a.Config.DbName,
+			a.Config.DbPort)
+		if err == nil {
+			break
+		}
+		log.Printf("[attempt %d/30] Failed to connect to db, retrying in 3 seconds...", attempt)
+		time.Sleep(3 * time.Second)
+	}
+
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Connected to database!")
+
 	err = client.AutoMigrate(
-		&domain.IssuingRecord{},
+		&domain.User{},
 	)
 	if err != nil {
 		log.Fatal(err)

@@ -14,9 +14,6 @@ services:
       CENTRAL_DB_PASS: ${CENTRAL_DB_PASS}
       CENTRAL_DB_PORT: ${CENTRAL_DB_PORT}
       CENTRAL_DB_USER: ${CENTRAL_DB_USER}
-    depends_on:
-      central-db:
-        condition: service_healthy
     networks:
       - network
 
@@ -56,9 +53,6 @@ services:
       CENTRAL_PORT: ${CENTRAL_PORT}
     ports:
       - ${EXPOSED_NS}:${LOCAL_PORT_NS}
-    depends_on:
-      local-db-ns:
-        condition: service_healthy
     networks:
       - network
 
@@ -99,9 +93,6 @@ services:
       CENTRAL_PORT: ${CENTRAL_PORT}
     ports:
       - ${EXPOSED_BG}:${LOCAL_PORT_BG}
-    depends_on:
-      local-db-bg:
-        condition: service_healthy
     networks:
       - network
 
@@ -141,9 +132,6 @@ services:
       CENTRAL_PORT: ${CENTRAL_PORT}
     ports:
       - ${EXPOSED_NI}:${LOCAL_PORT_NI}
-    depends_on:
-      local-db-ni:
-        condition: service_healthy
     networks:
       - network
 
