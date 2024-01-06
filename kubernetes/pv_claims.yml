@@ -1,0 +1,56 @@
+# Central library
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: central-lib-pvc
+spec:
+  volumeName: central-lib-pv
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 256Mi
+---
+# Local library NS
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: local-lib-ns-pvc
+spec:
+  volumeName: local-lib-ns-pv
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 256Mi
+---
+# Local library
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: local-lib-bg-pvc
+spec:
+  volumeName: local-lib-bg-pv
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 256Mi
+---
+# Local library NI
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: local-lib-ni-pvc
+spec:
+  volumeName: local-lib-ni-pv
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 256Mi
+---

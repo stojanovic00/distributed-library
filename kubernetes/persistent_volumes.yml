@@ -1,0 +1,66 @@
+# Central library
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: central-lib-pv
+spec:
+  capacity:
+    storage: 256Mi
+  volumeMode: Filesystem
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/central-lib-pv
+    type: DirectoryOrCreate
+
+---
+# Local library NS
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-lib-ns-pv
+spec:
+  capacity:
+    storage: 256Mi
+  volumeMode: Filesystem
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/local-lib-ns-pv
+    type: DirectoryOrCreate
+
+---
+# Local library BG
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-lib-bg-pv
+spec:
+  capacity:
+    storage: 256Mi
+  volumeMode: Filesystem
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/local-lib-bg-pv
+    type: DirectoryOrCreate
+
+---
+# Local library NI
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-lib-ni-pv
+spec:
+  capacity:
+    storage: 256Mi
+  volumeMode: Filesystem
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/local-lib-ni-pv
+    type: DirectoryOrCreate
