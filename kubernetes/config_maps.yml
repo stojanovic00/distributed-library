@@ -1,0 +1,92 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: central-config
+data:
+  CENTRAL_HOST: localhost
+  CENTRAL_PORT: "8080"
+
+  CENTRAL_DB_NAME: central_lib_db
+  CENTRAL_DB_HOST: localhost
+  CENTRAL_DB_PORT: "5432"
+  CENTRAL_DB_USER: postgres
+  CENTRAL_DB_PASS: postgres
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: local-bg-config
+data:
+  LOCAL_HOST: localhost
+  LOCAL_PORT: "8080"
+
+  LOCAL_DB_NAME: local_lib_db_bg
+  LOCAL_DB_HOST: localhost
+  LOCAL_DB_PORT: "5432"
+  LOCAL_DB_USER: postgres
+  LOCAL_DB_PASS: postgres
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: local-ni-config
+data:
+    LOCAL_HOST: localhost
+    LOCAL_PORT: "8080"
+
+    LOCAL_DB_NAME: local_lib_db_ni
+    LOCAL_DB_HOST: localhost
+    LOCAL_DB_PORT: "5432"
+    LOCAL_DB_USER: postgres
+    LOCAL_DB_PASS: postgres
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: local-ns-config
+data:
+    LOCAL_HOST: localhost
+    LOCAL_PORT: "8080"
+
+    LOCAL_DB_NAME: local_lib_db_ns
+    LOCAL_DB_HOST: localhost
+    LOCAL_DB_PORT: "5432"
+    LOCAL_DB_USER: postgres
+    LOCAL_DB_PASS: postgres
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: central-db-config
+data:
+    POSTGRES_DB: central_lib_db
+    PGUSER: postgres
+    POSTGRES_PASSWORD: postgres
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: local-db-ns-config
+data:
+    POSTGRES_DB: local_lib_db_ns
+    PGUSER: postgres
+    POSTGRES_PASSWORD: postgres
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: local-db-bg-config
+data:
+    POSTGRES_DB: local_lib_db_bg
+    PGUSER: postgres
+    POSTGRES_PASSWORD: postgres
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: local-db-ni-config
+data:
+    POSTGRES_DB: local_lib_db_ni
+    PGUSER: postgres
+    POSTGRES_PASSWORD: postgres
+---
