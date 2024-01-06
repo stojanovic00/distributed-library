@@ -1,0 +1,143 @@
+# Central lib
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: central-lib
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: central-lib
+  template:
+    metadata:
+      labels:
+        app: central-lib
+    spec:
+      containers:
+        - name: central-lib
+          image: aleksandar4761/central-library:latest
+          envFrom:
+            - configMapRef:
+                name: central-config
+
+        - name: central-db
+          image: postgres:latest
+          envFrom:
+            - configMapRef:
+                name: central-db-config
+          volumeMounts:
+            - name: central-db-volume
+              mountPath: /var/lib/postgresql/data
+
+      volumes:
+      - name: central-db-volume
+        persistentVolumeClaim:
+          claimName: central-lib-pvc
+---
+# Local lib NS
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: local-lib-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: local-lib-ns
+  template:
+    metadata:
+      labels:
+        app: local-lib-ns
+    spec:
+      containers:
+        - name: local-lib-ns
+          image: aleksandar4761/local-library:latest
+          envFrom:
+            - configMapRef:
+                name: local-ns-config
+
+        - name: local-db-ns
+          image: postgres:latest
+          envFrom:
+            - configMapRef:
+                name: local-db-ns-config
+          volumeMounts:
+            - name: local-db-ns-volume
+              mountPath: /var/lib/postgresql/data
+
+      volumes:
+      - name: local-db-ns-volume
+        persistentVolumeClaim:
+          claimName: local-lib-ns-pvc
+---
+# Local lib BG
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: local-lib-bg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: local-lib-bg
+  template:
+    metadata:
+      labels:
+        app: local-lib-bg
+    spec:
+      containers:
+        - name: local-lib-bg
+          image: aleksandar4761/local-library:latest
+          envFrom:
+            - configMapRef:
+                name: local-bg-config
+
+        - name: local-db-bg
+          image: postgres:latest
+          envFrom:
+            - configMapRef:
+                name: local-db-bg-config
+          volumeMounts:
+            - name: local-db-bg-volume
+              mountPath: /var/lib/postgresql/data
+
+      volumes:
+      - name: local-db-bg-volume
+        persistentVolumeClaim:
+          claimName: local-lib-bg-pvc
+---
+# Local lib NI
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: local-lib-ni
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: local-lib-ni
+  template:
+    metadata:
+      labels:
+        app: local-lib-ni
+    spec:
+      containers:
+        - name: local-lib-ni
+          image: aleksandar4761/local-library:latest
+          envFrom:
+            - configMapRef:
+                name: local-ni-config
+
+        - name: local-db-ni
+          image: postgres:latest
+          envFrom:
+            - configMapRef:
+                name: local-db-ni-config
+          volumeMounts:
+            - name: local-db-ni-volume
+              mountPath: /var/lib/postgresql/data
+
+      volumes:
+      - name: local-db-ni-volume
+        persistentVolumeClaim:
+          claimName: local-lib-ni-pvc
