@@ -22,6 +22,17 @@ func NewUserRepoPg(dbClient *gorm.DB) *UserRepoPg {
 	return &UserRepoPg{dbClient: dbClient}
 }
 
+func (rep *UserRepoPg) GetAll() ([]domain.User, error) {
+	var users []domain.User
+
+	err := rep.dbClient.Find(&users).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return users, nil
+}
+
 func (rep *UserRepoPg) Register(user *domain.User) (*domain.User, error) {
 	err := rep.dbClient.Create(user).Error
 	if err != nil {

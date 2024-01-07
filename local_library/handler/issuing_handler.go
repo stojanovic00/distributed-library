@@ -19,6 +19,16 @@ type IssuingHandler struct {
 func NewIssuingHandler(config *config.Config, issuingRepo repo.IssuingRepo) *IssuingHandler {
 	return &IssuingHandler{config: config, issuingRepo: issuingRepo}
 }
+func (h *IssuingHandler) GetAllIssuingRecords(ctx *gin.Context) {
+
+	records, err := h.issuingRepo.GetAll()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	ctx.JSON(http.StatusOK, records)
+}
 
 func (h *IssuingHandler) RecordBookIssue(ctx *gin.Context) {
 	var record domain.IssuingRecord

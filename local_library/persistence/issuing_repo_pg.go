@@ -17,7 +17,16 @@ type IssuingRepoPg struct {
 func NewIssuingRepoPg(dbClient *gorm.DB) *IssuingRepoPg {
 	return &IssuingRepoPg{dbClient: dbClient}
 }
+func (rep *IssuingRepoPg) GetAll() ([]domain.IssuingRecord, error) {
+	var records []domain.IssuingRecord
 
+	err := rep.dbClient.Find(&records).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return records, nil
+}
 func (rep *IssuingRepoPg) CheckIfTaken(isbn string) bool {
 	foundRecord := domain.IssuingRecord{}
 	err := rep.dbClient.Where("isbn = ? and returned = false", isbn).First(&foundRecord).Error

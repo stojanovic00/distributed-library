@@ -24,6 +24,7 @@ func (a *App) CreateRoutersAndSetRoutes() error {
 	})
 
 	userGroup := router.Group("/user")
+	userGroup.GET("", userHandler.GetAllUsers)
 	userGroup.POST("", userHandler.Register)
 	userGroup.POST("/:id/record-issue", userHandler.RecordBookIssue)
 	userGroup.POST("/:id/record-return", userHandler.RecordBookReturn)

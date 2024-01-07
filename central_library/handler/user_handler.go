@@ -11,11 +11,11 @@ import (
 )
 
 type UserHandler struct {
-	repo repo.UserRepo
+	userRepo repo.UserRepo
 }
 
 func NewUserHandler(repo repo.UserRepo) *UserHandler {
-	return &UserHandler{repo: repo}
+	return &UserHandler{userRepo: repo}
 }
 
 func (h *UserHandler) Register(ctx *gin.Context) {
@@ -27,7 +27,7 @@ func (h *UserHandler) Register(ctx *gin.Context) {
 		return
 	}
 
-	createdUser, err := h.repo.Register(&user)
+	createdUser, err := h.userRepo.Register(&user)
 	if err != nil {
 		ctx.JSON(http.StatusConflict, err.Error())
 		return
@@ -44,7 +44,7 @@ func (h *UserHandler) RecordBookIssue(ctx *gin.Context) {
 		return
 	}
 
-	err = h.repo.RecordBookIssue(uint(userIDint))
+	err = h.userRepo.RecordBookIssue(uint(userIDint))
 	if err != nil {
 		if errors.Is(err, persistence.ErrNotFound) {
 			ctx.JSON(http.StatusNotFound, err.Error())
@@ -65,7 +65,7 @@ func (h *UserHandler) RecordBookReturn(ctx *gin.Context) {
 		return
 	}
 
-	err = h.repo.RecordBookReturn(uint(userIDint))
+	err = h.userRepo.RecordBookReturn(uint(userIDint))
 	if err != nil {
 		if errors.Is(err, persistence.ErrNotFound) {
 			ctx.JSON(http.StatusNotFound, err.Error())
@@ -76,4 +76,15 @@ func (h *UserHandler) RecordBookReturn(ctx *gin.Context) {
 	}
 
 	ctx.Status(http.StatusOK)
+}
+
+func (h *UserHandler) GetAllUsers(ctx *gin.Context) {
+
+	users, err := h.userRepo.GetAll()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	ctx.JSON(http.StatusOK, users)
 }

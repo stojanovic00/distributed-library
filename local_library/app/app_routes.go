@@ -18,7 +18,7 @@ func (a *App) CreateRoutersAndSetRoutes() error {
 	issuingHandler := handler.NewIssuingHandler(&a.Config, issuingRepo)
 
 	// ROUTES
-	//gin.SetMode(gin.ReleaseMode)
+	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 
 	router.NoRoute(func(c *gin.Context) {
@@ -31,6 +31,7 @@ func (a *App) CreateRoutersAndSetRoutes() error {
 	userGroup.POST("", userHandler.Register)
 
 	bookGroup := cityGroup.Group("/book")
+	bookGroup.GET("/issue", issuingHandler.GetAllIssuingRecords)
 	bookGroup.POST("/issue", issuingHandler.RecordBookIssue)
 	bookGroup.PUT(":isbn/return", issuingHandler.RecordBookReturn)
 
@@ -62,7 +63,7 @@ func (a *App) initPGClient() *gorm.DB {
 	log.Printf("Connected to database!")
 
 	err = client.AutoMigrate(
-		&domain.User{},
+		&domain.IssuingRecord{},
 	)
 	if err != nil {
 		log.Fatal(err)
