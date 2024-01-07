@@ -1,1 +1,2 @@
 psql -U postgres -d central_lib_db
+psql -U postgres -d local_lib_db_ns

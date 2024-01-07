@@ -38,8 +38,7 @@ services:
 
 #NS
   local-lib-ns:
-    #image: aleksandar4761/local-library:latest
-    build: ./local_library
+    image: aleksandar4761/local-library:latest
     environment:
       LOCAL_HOST: ${LOCAL_HOST_NS}
       LOCAL_PORT: ${LOCAL_PORT_NS}
