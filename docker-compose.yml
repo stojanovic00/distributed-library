@@ -38,7 +38,8 @@ services:
 
 #NS
   local-lib-ns:
-    image: aleksandar4761/local-library:latest
+    #image: aleksandar4761/local-library:latest
+    build: ./local_library
     environment:
       LOCAL_HOST: ${LOCAL_HOST_NS}
       LOCAL_PORT: ${LOCAL_PORT_NS}
@@ -51,6 +52,8 @@ services:
 
       CENTRAL_HOST: ${CENTRAL_HOST}
       CENTRAL_PORT: ${CENTRAL_PORT}
+
+      CITY_PATH: ${CITY_PATH_NS}
     ports:
       - ${EXPOSED_NS}:${LOCAL_PORT_NS}
     networks:
@@ -91,6 +94,8 @@ services:
 
       CENTRAL_HOST: ${CENTRAL_HOST}
       CENTRAL_PORT: ${CENTRAL_PORT}
+
+      CITY_PATH: ${CITY_PATH_BG}
     ports:
       - ${EXPOSED_BG}:${LOCAL_PORT_BG}
     networks:
@@ -130,6 +135,8 @@ services:
 
       CENTRAL_HOST: ${CENTRAL_HOST}
       CENTRAL_PORT: ${CENTRAL_PORT}
+
+      CITY_PATH: ${CITY_PATH_NI}
     ports:
       - ${EXPOSED_NI}:${LOCAL_PORT_NI}
     networks:

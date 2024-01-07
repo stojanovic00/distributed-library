@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: central-lib-service
+spec:
+  selector:
+    app: central-lib
+  ports:
+    - protocol: 'TCP'
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: local-lib-ns-service
+spec:
+  selector:
+    app: local-lib-ns
+  ports:
+    - protocol: 'TCP'
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: local-lib-bg-service
+spec:
+  selector:
+    app: local-lib-bg
+  ports:
+    - protocol: 'TCP'
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: local-lib-ni-service
+spec:
+  selector:
+    app: local-lib-ni
+  ports:
+    - protocol: 'TCP'
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+---

@@ -15,8 +15,8 @@ func (a *App) CreateRoutersAndSetRoutes() error {
 	pgClient := a.initPGClient()
 	userRepo := persistence.NewUserRepoPg(pgClient)
 	userHandler := handler.NewUserHandler(userRepo)
-
 	// ROUTES
+	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 
 	router.NoRoute(func(c *gin.Context) {

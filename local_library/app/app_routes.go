@@ -18,16 +18,19 @@ func (a *App) CreateRoutersAndSetRoutes() error {
 	issuingHandler := handler.NewIssuingHandler(&a.Config, issuingRepo)
 
 	// ROUTES
+	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(404, gin.H{"message": "Endpoint doesn't exist"})
 	})
 
-	userGroup := router.Group("/user")
+	cityGroup := router.Group(a.Config.CityPath)
+
+	userGroup := cityGroup.Group("/user")
 	userGroup.POST("", userHandler.Register)
 
-	bookGroup := router.Group("/book")
+	bookGroup := cityGroup.Group("/book")
 	bookGroup.POST("/issue", issuingHandler.RecordBookIssue)
 	bookGroup.PUT(":isbn/return", issuingHandler.RecordBookReturn)
 

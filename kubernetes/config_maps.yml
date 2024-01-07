@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: central-config
 data:
-  CENTRAL_HOST: localhost
+  CENTRAL_HOST: 0.0.0.0
   CENTRAL_PORT: "8080"
 
   CENTRAL_DB_NAME: central_lib_db
@@ -11,6 +11,25 @@ data:
   CENTRAL_DB_PORT: "5432"
   CENTRAL_DB_USER: postgres
   CENTRAL_DB_PASS: postgres
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: local-ns-config
+data:
+    LOCAL_HOST: 0.0.0.0
+    LOCAL_PORT: "8080"
+
+    LOCAL_DB_NAME: local_lib_db_ns
+    LOCAL_DB_HOST: localhost
+    LOCAL_DB_PORT: "5432"
+    LOCAL_DB_USER: postgres
+    LOCAL_DB_PASS: postgres
+
+    CENTRAL_HOST: central-lib-service.default
+    CENTRAL_PORT: "8080"
+
+    CITY_PATH: ns
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -25,6 +44,11 @@ data:
   LOCAL_DB_PORT: "5432"
   LOCAL_DB_USER: postgres
   LOCAL_DB_PASS: postgres
+
+  CENTRAL_HOST: central-lib-service.default
+  CENTRAL_PORT: "8080"
+
+  CITY_PATH: bg
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -39,20 +63,11 @@ data:
     LOCAL_DB_PORT: "5432"
     LOCAL_DB_USER: postgres
     LOCAL_DB_PASS: postgres
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: local-ns-config
-data:
-    LOCAL_HOST: localhost
-    LOCAL_PORT: "8080"
 
-    LOCAL_DB_NAME: local_lib_db_ns
-    LOCAL_DB_HOST: localhost
-    LOCAL_DB_PORT: "5432"
-    LOCAL_DB_USER: postgres
-    LOCAL_DB_PASS: postgres
+    CENTRAL_HOST: central-lib-service.default
+    CENTRAL_PORT: "8080"
+
+    CITY_PATH: ni
 ---
 apiVersion: v1
 kind: ConfigMap

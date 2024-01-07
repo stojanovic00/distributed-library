@@ -20,7 +20,6 @@ func NewUserHandler(config *config.Config) *UserHandler {
 }
 
 func (h *UserHandler) Register(ctx *gin.Context) {
-
 	requestUrl := fmt.Sprintf("http://%s:%s/user", h.config.CentralLibHost, h.config.CentralLibPort)
 	// Read the raw request body
 	requestBody, err := io.ReadAll(ctx.Request.Body)
