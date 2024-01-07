@@ -18,7 +18,7 @@ func (a *App) CreateRoutersAndSetRoutes() error {
 	issuingHandler := handler.NewIssuingHandler(&a.Config, issuingRepo)
 
 	// ROUTES
-	gin.SetMode(gin.ReleaseMode)
+	//gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 
 	router.NoRoute(func(c *gin.Context) {

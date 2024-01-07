@@ -4,35 +4,34 @@ metadata:
   name: lib-ingress
   labels:
     name: lib-ingress      
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 
 spec:
   rules:
-  - host: library.com
-    http:
-      paths:
-      - pathType: Prefix
-        path: "/ns"
-        backend:
-          service:
-            name: local-lib-ns-service
-            port:
-              number: 8080
-      - pathType: Prefix
-        path: "/bg"
-        backend:
-          service:
-            name: local-lib-bg-service
-            port:
-              number: 8080
+    - host: library.com
+      http:
+        paths:
 
-      - pathType: Prefix
-        path: "/ni"
-        backend:
-          service:
-            name: local-lib-ni-service
-            port:
-              number: 8080
+        - pathType: Prefix
+          path: /ns
+          backend:
+            service:
+              name: local-lib-ns-service
+              port:
+                number: 8080
 
+        - pathType: Prefix
+          path: /bg
+          backend:
+            service:
+              name: local-lib-bg-service
+              port:
+                number: 8080
+
+        - pathType: Prefix
+          path: /ni
+          backend:
+            service:
+              name: local-lib-ni-service
+              port:
+                number: 8080
 

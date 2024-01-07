@@ -36,7 +36,7 @@ kind: ConfigMap
 metadata:
   name: local-bg-config
 data:
-  LOCAL_HOST: localhost
+  LOCAL_HOST: 0.0.0.0
   LOCAL_PORT: "8080"
 
   LOCAL_DB_NAME: local_lib_db_bg
@@ -55,7 +55,7 @@ kind: ConfigMap
 metadata:
   name: local-ni-config
 data:
-    LOCAL_HOST: localhost
+    LOCAL_HOST: 0.0.0.0
     LOCAL_PORT: "8080"
 
     LOCAL_DB_NAME: local_lib_db_ni
